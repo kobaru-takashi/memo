@@ -21,14 +21,17 @@
 <?php
 try {
     $db = new PDO('mysql:dbname=mydb;host=localhost;port=8889;charset=utf8','root','root');
+
+    $statement = $db->prepare('INSERT INTO memos SET memo=?, created_at=NOW()');
+    $statement->bindParam(1, $_POST['memo']);  //①
+    $statement->execute();                    //②
+    // $statement->execute(array($_POST['memo'])); ③＝①＋②同じ内容
+    echo 'メッセージが登録されました';
 } catch(PDOException $e) {
     echo 'DB接続エラー:' . $e->getMessage();
 }
 
-$records = $db->query('SELECT * FROM my_items');
-while ($record = $records->fetch()){
-    print($record['item_name'] . "\n");
-}
+
 ?>
   </pre>
 </main>
